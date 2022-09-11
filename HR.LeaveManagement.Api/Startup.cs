@@ -1,3 +1,5 @@
+using HR.LeaveManagement.Application;
+using HR.LeaveManagement.Infrastructure;
 using HR.LeaveManagement.Persistence;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -17,6 +19,7 @@ namespace HR.LeaveManagement.Api
 {
     public class Startup
     {
+        readonly string CorsPolicy = "_myCorsPolicy";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -31,9 +34,23 @@ namespace HR.LeaveManagement.Api
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HR.LeaveManagement.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HR LeaveManagement Api", Version = "v1" });
             });
+
             services.ConfigurePersistenceServices(Configuration);
+            services.ConfigureInfrastructureServices(Configuration);
+            services.ConfigureApplicaitonServices();
+
+            // configure cors
+            services.AddCors(options =>
+            {
+                options.AddPolicy(CorsPolicy, builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +66,8 @@ namespace HR.LeaveManagement.Api
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(CorsPolicy);
 
             app.UseAuthorization();
 

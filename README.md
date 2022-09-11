@@ -17,7 +17,7 @@ dotnet user-secrets init
 #### Set the Connection String
 
 ```
-dotnet user-secrets set "ConnectionStrings:DefaultConnection" ""
+dotnet user-secrets set "ConnectionStrings:LeaveManagementConnectionString" ""
 ```
 
 #### Set the Email String
@@ -43,4 +43,14 @@ The code below is stored in <i>secrets.json</i> file. The commands above transla
     "FromName": "",
     "FromAddress": ""
   }
+```
+
+## Running Migration
+
+```powershell
+add-migration InitialCreation
+```
+
+```powershell
+update-database
 ```

@@ -41,7 +41,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveTypes.Handlers.Commands
                 response.Success = false;
                 response.Message = $"Leavetype creation failed";
                 response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
-
+                response.Data = 0;
                 return response;
                 // throw new ValidationException((IEnumerable<ValidationFailure>)(validationResult as ValidationResult));
             }
@@ -51,6 +51,7 @@ namespace HR.LeaveManagement.Application.Features.LeaveTypes.Handlers.Commands
             
             response.Success = true;
             response.Message = "Leave type creation succesful";
+            response.Data = leaveType.Id;
             return response;
         }
     }
